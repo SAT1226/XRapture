@@ -617,7 +617,7 @@ void XRapture::mousePressEvent(QMouseEvent* event)
   else {
     auto items = this -> scene() -> selectedItems();
     if(items.size() == 0) {
-      preDrawItem_ -> setFlags(0);
+      preDrawItem_ -> setFlags({});
 
       this -> scene() -> removeItem(preDrawItem_);
       auto addItemCommand = new AddItemCommand(this -> scene(), preDrawItem_);
@@ -646,7 +646,7 @@ void XRapture::mouseReleaseEvent(QMouseEvent* event)
   else {
     auto items = this -> scene() -> selectedItems();
     if(items.size() == 0) {
-      preDrawItem_ -> setFlags(0);
+      preDrawItem_ -> setFlags({});
 
       this -> scene() -> removeItem(preDrawItem_);
       auto addItemCommand = new AddItemCommand(this -> scene(), preDrawItem_);
@@ -867,7 +867,7 @@ void XRapture::drawBlurRect(QPointF p1, QPointF p2)
 void XRapture::wheelEvent(QWheelEvent *event)
 {
   if(event -> modifiers() == Qt::ControlModifier) {
-    if(event -> delta() > 0) {
+    if(event -> angleDelta().y() > 0) {
       zoomScale_ += 10;
     }
     else{
