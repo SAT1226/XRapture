@@ -18,6 +18,8 @@
 #include <QPair>
 #include <QFileDialog>
 #include <QUndoCommand>
+#include <QDate>
+#include <QTime>
 #include <complex>
 
 #include "TextInputDialog.hpp"
@@ -986,7 +988,9 @@ void XRapture::openAction()
 
 void XRapture::saveAction()
 {
-  auto fileName = QFileDialog::getSaveFileName(this);
+  auto fileName = QFileDialog::getSaveFileName(this, "Save File", "screenshot_" +
+                                               QDate::currentDate().toString("yyyy-MM-dd") + "_" +
+                                               QTime::currentTime().toString("hh-mm-ss") + ".png");
 
   if(!fileName.isEmpty()) {
     auto saveImg = this -> getCurrentImage();
