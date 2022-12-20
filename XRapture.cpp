@@ -18,6 +18,7 @@
 #include <QPair>
 #include <QFileDialog>
 #include <QUndoCommand>
+#include <QMessageBox>
 #include <QDate>
 #include <QTime>
 #include <complex>
@@ -979,10 +980,15 @@ void XRapture::openAction()
 
   if(!fileName.isEmpty()) {
     QImage img(fileName);
-    this -> setPixmap(QPixmap::fromImage(img));
+    if(!img.isNull()) {
+      this -> setPixmap(QPixmap::fromImage(img));
 
-    auto rect = this -> geometry();
-    this -> changeWindowGeometry(rect.x(), rect.y(), img.width(), img.height());
+      auto rect = this -> geometry();
+      this -> changeWindowGeometry(rect.x(), rect.y(), img.width(), img.height());
+    }
+    else {
+      QMessageBox::warning(this, "Warning", "Invalid Image: " + fileName);
+    }
   }
 }
 
