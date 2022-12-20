@@ -22,6 +22,7 @@ public:
   void contextMenuEvent(QContextMenuEvent *event);
   void screenCapture(int x, int y, int w, int h);
   void reCaptureAction();
+  bool openImageFile(const QString fileName);
 
 private:
   QImage applyEffect(const QPixmap& src, QGraphicsEffect *effect, const QRect& rect) const;

@@ -11,18 +11,26 @@ int main(int argc, char** argv)
   options.border = 2.0;
   options.tolerance = 0.0;
 
-  selection = slop::SlopSelect(&options);
-  if(selection.cancelled) {
-    std::cerr << "cancelled" << std::endl;
-    return 1;
+  if(argc == 1) {
+    selection = slop::SlopSelect(&options);
+    if(selection.cancelled) {
+      std::cerr << "cancelled" << std::endl;
+      return 1;
+    }
   }
 
   QApplication app(argc, argv);
   QGraphicsScene scene;
   XRapture* xrapture = new XRapture(&scene);
 
-  xrapture -> screenCapture(selection.x, selection.y, selection.w, selection.h);
-  xrapture -> show();
+  if(argc > 1) {
+    xrapture -> show();
+    if(!xrapture -> openImageFile(argv[1])) return 1;
+  }
+  else {
+    xrapture -> screenCapture(selection.x, selection.y, selection.w, selection.h);
+    xrapture -> show();
+  }
 
   return app.exec();
 }

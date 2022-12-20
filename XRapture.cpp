@@ -934,6 +934,22 @@ void XRapture::reCaptureAction()
   this -> mSleep(50);
 }
 
+bool XRapture::openImageFile(const QString fileName)
+{
+  QImage img(fileName);
+  if(!img.isNull()) {
+    this -> setPixmap(QPixmap::fromImage(img));
+
+    auto rect = this -> geometry();
+    this -> changeWindowGeometry(rect.x(), rect.y(), img.width(), img.height());
+    return true;
+  }
+  else {
+    QMessageBox::warning(this, "Warning", "Invalid Image: " + fileName);
+    return false;
+  }
+}
+
 void XRapture::calcTransform()
 {
   this -> setTransform(scale_ * mirror_ * rotation_);
@@ -979,16 +995,7 @@ void XRapture::openAction()
   auto fileName = QFileDialog::getOpenFileName(this);
 
   if(!fileName.isEmpty()) {
-    QImage img(fileName);
-    if(!img.isNull()) {
-      this -> setPixmap(QPixmap::fromImage(img));
-
-      auto rect = this -> geometry();
-      this -> changeWindowGeometry(rect.x(), rect.y(), img.width(), img.height());
-    }
-    else {
-      QMessageBox::warning(this, "Warning", "Invalid Image: " + fileName);
-    }
+    openImageFile(fileName);
   }
 }
 
